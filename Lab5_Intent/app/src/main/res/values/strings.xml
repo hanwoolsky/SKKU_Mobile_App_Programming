@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">lab5</string>
+    <string name="broadcast">broadcast</string>
+    <string name="implicit">Implicit</string>
+    <string name="password">Password</string>
+    <string name="id">ID</string>
+    <string name="login">Login</string>
+    <string name="search_in_internet">SEARCH IN INTERNET</string>
+    <string name="calling">CALLING</string>
+    <string name="search_keyboard">search keyboard</string>
+    <string name="phone_number">phone number</string>
+</resources>

@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">PA1_Puzzle</string>
+    <string name="img1">img1</string>
+    <string name="img2">img2</string>
+    <string name="img3">img3</string>
+    <string name="img4">img4</string>
+    <string name="img5">img5</string>
+    <string name="img6">img6</string>
+    <string name="img7">img7</string>
+    <string name="img8">img8</string>
+    <string name="img9">img9</string>
+    <string name="img01">img01</string>
+    <string name="img02">img02</string>
+    <string name="img03">img03</string>
+    <string name="img04">img04</string>
+    <string name="img05">img05</string>
+    <string name="img06">img06</string>
+    <string name="img07">img07</string>
+    <string name="img08">img08</string>
+    <string name="img09">img09</string>
+    <string name="img10">img010</string>
+    <string name="img11">img011</string>
+    <string name="img12">img012</string>
+    <string name="img13">img013</string>
+    <string name="img14">img014</string>
+    <string name="img15">img015</string>
+    <string name="img16">img016</string>
+    <string name="complete">complete</string>
+    <string name="_3_x_3">3 X 3</string>
+    <string name="_4_x_4">4 X 4</string>
+    <string name="shuffle">SHUFFLE</string>
+</resources>

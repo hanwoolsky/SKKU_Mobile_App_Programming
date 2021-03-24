@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Lab4</string>
+    <string name="First">First</string>
+    <string name="Second">Second</string>
+    <string name="Third">Third</string>
+    <string name="top">Welcome! Click the button below!</string>
+</resources>

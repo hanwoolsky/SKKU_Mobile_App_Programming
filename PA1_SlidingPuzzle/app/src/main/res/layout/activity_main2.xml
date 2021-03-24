@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/complete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/imagecomp" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/_3_x_3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/_4_x_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button4"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <GridLayout
+        android:id="@+id/gridView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:columnCount="4"
+        android:orientation="horizontal"
+        android:rowCount="4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button">
+
+        <ImageView
+            android:id="@+id/imageView001"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:contentDescription="@string/img01"
+            app:srcCompat="@drawable/image001" />
+
+        <ImageView
+            android:id="@+id/imageView002"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:contentDescription="@string/img02"
+            app:srcCompat="@drawable/image002" />
+
+        <ImageView
+            android:id="@+id/imageView003"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:contentDescription="@string/img03"
+            app:srcCompat="@drawable/image003" />
+
+        <ImageView
+            android:id="@+id/imageView004"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:contentDescription="@string/img04"
+            app:srcCompat="@drawable/image004" />
+
+        <ImageView
+            android:id="@+id/imageView005"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:contentDescription="@string/img05"
+            app:srcCompat="@drawable/image005" />
+
+        <ImageView
+            android:id="@+id/imageView006"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:contentDescription="@string/img06"
+            app:srcCompat="@drawable/image006" />
+
+        <ImageView
+            android:id="@+id/imageView007"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:contentDescription="@string/img07"
+            app:srcCompat="@drawable/image007" />
+
+        <ImageView
+            android:id="@+id/imageView008"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:contentDescription="@string/img08"
+            app:srcCompat="@drawable/image008" />
+
+        <ImageView
+            android:id="@+id/imageView009"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:contentDescription="@string/img09"
+            app:srcCompat="@drawable/image009" />
+
+        <ImageView
+            android:id="@+id/imageView010"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:contentDescription="@string/img10"
+            app:srcCompat="@drawable/image0010" />
+
+        <ImageView
+            android:id="@+id/imageView011"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:contentDescription="@string/img11"
+            app:srcCompat="@drawable/image0011" />
+
+        <ImageView
+            android:id="@+id/imageView012"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:contentDescription="@string/img12"
+            app:srcCompat="@drawable/image0012" />
+
+        <ImageView
+            android:id="@+id/imageView013"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:contentDescription="@string/img13"
+            app:srcCompat="@drawable/image0013" />
+
+        <ImageView
+            android:id="@+id/imageView014"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:contentDescription="@string/img14"
+            app:srcCompat="@drawable/image0014" />
+
+        <ImageView
+            android:id="@+id/imageView015"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:contentDescription="@string/img15"
+            app:srcCompat="@drawable/image0015" />
+
+        <ImageView
+            android:id="@+id/imageView016"
+            android:layout_width="97.5dp"
+            android:layout_height="97.5dp"
+            android:contentDescription="@string/img16"
+            app:srcCompat="@drawable/image0016" />
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/shuffle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridView2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
