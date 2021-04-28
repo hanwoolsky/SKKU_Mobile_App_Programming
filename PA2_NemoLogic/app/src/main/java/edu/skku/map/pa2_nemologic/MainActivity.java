@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 0;
     private ImageView imageView;
 
-    private Button gbtn, sbtn;
+    private Button gbtn;
     private CheckBox image00, image01, image02, image03, image04, image05, image06, image07, image08, image09, image010, image011, image012, image013, image014, image015, image016, image017, image018, image019,
         image10, image11, image12, image13, image14, image15, image16, image17, image18, image19, image110, image111, image112, image113, image114, image115, image116, image117, image118, image119,
         image20, image21, image22, image23, image24, image25, image26, image27, image28, image29, image210, image211, image212, image213, image214, image215, image216, image217, image218, image219,
@@ -165,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_main);
         gbtn = findViewById(R.id.gallery);
-        sbtn = findViewById(R.id.search);
         image00 = findViewById(R.id.image00);
         image01 = findViewById(R.id.image01);
         image02 = findViewById(R.id.image02);
@@ -566,9 +565,6 @@ public class MainActivity extends AppCompatActivity {
         image1917 = findViewById(R.id.image1917);
         image1918 = findViewById(R.id.image1918);
         image1919 = findViewById(R.id.image1919); // 19
-
-        String clientID = "wSnG2lnF9KbHWGwCh5za";
-        String clientSecret = "QRbaydlYCFQRbaydlYCF";
 
         gbtn.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
@@ -2957,54 +2953,7 @@ public class MainActivity extends AppCompatActivity {
             check(19, 19);
         }); // 19
     }
-/*
-        sbtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                EditText text = findViewById(R.id.editTextTextPersonName);
-                String Search = text.getText().toString();
-                String apiURL = "https://openapi.naver.com/v1/search/image?query=" + text;
-
-                Map<String, String> requestHeaders = new HashMap<>();
-                requestHeaders.put("X-Naver-Client-Id", clientID);
-                requestHeaders.put("X-Naver-Client-Secret", clientSecret);
-
-            }
-        });
-
-
-
-                //OkHttpClient client = new OkHttpClient();
-                //HttpUrl.Builder urlBuilder = HttpUrl.parse(apiURL).newBuilder();
-                //urlBuilder.addQueryParameter("query", Search);
-
-                //String url = urlBuilder.build().toString();
-
-                //Request req = new Request.Builder().url(url).build();
-                //client.newCall(req).enqueue(new Callback() {
-                    //@Override
-                    //public void onFailure(@NotNull okhttp3.Call call, @NotNull IOException e) {
-                        //e.printStackTrace();
-                    //}
-
-                    //@Override
-                    //public void onResponse(@NotNull okhttp3.Call call, @NotNull Response response) throws IOException {
-                        //final String myResponse = response.body().string();
-                        //Gson gson = new GsonBuilder().create();
-                        //final DataModel data = gson.fromJson(myResponse, DataModel.class);
-
-                        //MainActivity.this.runOnUiThread(new Runnable() {
-                            //@SuppressLint("SetTextI18n")
-                            //@Override
-                            //public void run() {
-                                //textView.setText("Title : " + data.getDisplay());
-                            //}
-                        //});
-                    //}
-                //});
-
-    }
- */
+    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
