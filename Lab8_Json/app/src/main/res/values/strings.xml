@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Week8</string>
+    <string name="send_get_request">Send Get Request</string>
+    <string name="send_post_request">Send Post Request</string>
+</resources>

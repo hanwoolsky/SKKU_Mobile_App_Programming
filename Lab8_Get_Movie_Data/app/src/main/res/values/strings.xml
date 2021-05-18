@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Lab8_Get_Movie_Data</string>
+    <string name="search">SEARCH</string>
+    <string name="movie_title">Movie Title</string>
+</resources>
