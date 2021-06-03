@@ -4,32 +4,62 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_pa3_coronalive/global.dart' as global;
 
 Future<Album> fetchAlbum() async {
-  final response = await http.get(Uri.http('swopenapi.seoul.go.kr','api/subway/515a4d50756868773131386843626e52/json/realtimeStationArrival/0/5/성균관대'));
+  final response = await http.get((Uri.http('raw.githubusercontent.com','owid/covid-19-data/master/public/data/vaccinations/vaccinations.json')));
   if (response.statusCode == 200) {
-    return Album.fromJson(jsonDecode(response.body));
+    int country = jsonDecode(response.body).length;
+    int totalVacc = 0;
+    //List<int> totalVaccList = [0, 0, 0, 0, 0, 0, 0];
+    int totalFullyVacc = 0;
+    //List<int> totalFullyVaccList = [0, 0, 0, 0, 0, 0, 0];
+    int dailyVacc = 0;
+    //List<int> dailyVaccList = [0, 0, 0, 0, 0, 0, 0];
+    for(int i = 0; i < country; i++){
+      int datalength = jsonDecode(response.body)[i]['data'].length;
+      if(jsonDecode(response.body)[i]['data'][datalength-1]['total_vaccinations'] == null){
+        if(jsonDecode(response.body)[i]['data'][datalength-1]['people_vaccinated'] != null) totalVacc += jsonDecode(response.body)[i]['data'][datalength-1]['people_vaccinated'];
+        else if (jsonDecode(response.body)[i]['data'][datalength-1]['people_fully_vaccinated'] != null) totalVacc += jsonDecode(response.body)[i]['data'][datalength-1]['people_fully_vaccinated'];
+        else totalVacc += 0;
+      }
+      else totalVacc += jsonDecode(response.body)[i]['data'][datalength-1]['total_vaccinations'];
+
+      if(jsonDecode(response.body)[i]['data'][datalength-1]['people_fully_vaccinated'] == null) {
+        if(datalength < 2 || jsonDecode(response.body)[i]['data'][datalength-2]['people_fully_vaccinated'] == null) totalFullyVacc += 0;
+        else totalFullyVacc += jsonDecode(response.body)[i]['data'][datalength-2]['people_fully_vaccinated'];
+      }
+      else totalFullyVacc += jsonDecode(response.body)[i]['data'][datalength-1]['people_fully_vaccinated'];
+
+      if(jsonDecode(response.body)[i]['data'][datalength-1]['daily_vaccinations'] == null) {
+        if(datalength < 2 || jsonDecode(response.body)[i]['data'][datalength-2]['daily_vaccinations'] == null) dailyVacc += 0;
+        else dailyVacc += jsonDecode(response.body)[i]['data'][datalength-2]['daily_vaccinations'];
+      }
+      else dailyVacc += jsonDecode(response.body)[i]['data'][datalength-1]['daily_vaccinations'];
+    }
+    global.totalVacc = totalVacc;
+    global.totalFullyVacc = totalFullyVacc;
+    global.dailyVacc = dailyVacc;
+    return Album.fromJson(jsonDecode(response.body)[0]);
   } else {
     throw Exception('Failed to load album');
   }
 }
 
 class Album {
-  final int rowNum;
-  final String subwayId;
-  final String trainLineNm;
-  final String subwayHeading;
-  final String arvlMsg2;
-  Album({@required this.rowNum, @required this.subwayId, @required this.trainLineNm, @required this.subwayHeading, @required this.arvlMsg2});
+  final String date;
+  final int totalVaccine;
+  final int dailyVaccine;
+  final double totalFullyVaccine;
+  Album({@required this.date, @required this.totalVaccine, @required this.dailyVaccine, @required this.totalFullyVaccine});
 
   factory Album.fromJson(Map<String, dynamic> json) {
-    var list = json['realtimeArrivalList'];
+    var data = json['data'];
     return Album(
-      rowNum: list[0]['rowNum'],
-      subwayId: list[0]['subwayId'],
-      trainLineNm: list[0]['trainLineNm'],
-      subwayHeading: list[0]['subwayHeading'],
-      arvlMsg2: list[0]['arvlMsg2'],
+      date: data[data.length-1]['date'],
+      totalVaccine: data[data.length-1]['total_vaccinations'],
+      totalFullyVaccine: data[data.length-1]['people_fully_vaccinated_per_hundred'],
+      dailyVaccine: data[data.length-1]['daily_vaccinations'],
     );
   }
 }
@@ -38,7 +68,7 @@ class Vaccine extends StatelessWidget {
   final Map<String, String> arguments;
   Vaccine(this.arguments);
   Future<Album> futureAlbum = fetchAlbum();
-
+  String parseDate = "";
   @override
   Widget build(BuildContext context) {
     VaccineCounterProvider vaccine = Provider.of<VaccineCounterProvider>(context);
@@ -46,6 +76,9 @@ class Vaccine extends StatelessWidget {
       Navigator.pushNamed(
         context,
         '/menu.dart',
+        arguments: {
+          "user-msg1": arguments["user-msg1"],
+        },
       );
     }
     return Scaffold(
@@ -72,16 +105,17 @@ class Vaccine extends StatelessWidget {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Total Vacc.", style: TextStyle(color: Colors.black, fontSize: 15)),
+                          Text("Total Vacc.          ", style: TextStyle(color: Colors.black, fontSize: 15)),
                           Text("Parsed latest date", style: TextStyle(color: Colors.black, fontSize: 15)),
                         ]
                     ),
                     FutureBuilder<Album>(
                       future: futureAlbum,
                       builder: (context, snapshot){
-                        if (snapshot.hasData){
-                          return Text( "${snapshot.data.rowNum} people           ${snapshot.data.subwayId}");
-                        } else if (snapshot.hasError) {
+                        if(snapshot.hasData){
+                          parseDate = "${snapshot.data.date}";
+                          return Text("${global.totalVacc} people         ${snapshot.data.date}");
+                        } else if(snapshot.hasError) {
                           return Text("${snapshot.error}");
                         }
                         return CircularProgressIndicator();
@@ -90,17 +124,16 @@ class Vaccine extends StatelessWidget {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Total fully Vacc.", style: TextStyle(color: Colors.black, fontSize: 15)),
-                          Text("Daily Vacc.", style: TextStyle(color: Colors.black, fontSize: 15)),
+                          Text("\nTotal fully Vacc.           ", style: TextStyle(color: Colors.black, fontSize: 15)),
+                          Text("\nDaily Vacc.", style: TextStyle(color: Colors.black, fontSize: 15)),
                         ]
                     ),
                     FutureBuilder<Album>(
                       future: futureAlbum,
                       builder: (context, snapshot){
-                        if (snapshot.hasData){
-                          return Text(
-                                  "${snapshot.data.trainLineNm} ${snapshot.data.arvlMsg2}");
-                        } else if (snapshot.hasError) {
+                        if(snapshot.hasData){
+                          return Text("${global.totalFullyVacc} people    ${global.dailyVacc} people");
+                        } else if(snapshot.hasError) {
                           return Text("${snapshot.error}");
                         }
                         return CircularProgressIndicator();
@@ -139,14 +172,8 @@ class Vaccine extends StatelessWidget {
                           //style: Theme.of(context).textTheme.headline4,
                         ),
                       ),
-                      /*consumer<VaccineCounterProvider>(
+                      Consumer<VaccineCounterProvider>(
                         builder: (context, counter, child) => SizedBox(
-                          width: 200,
-                          height: 150,
-                          child: Image.asset(vaccine.image),
-                        ),
-                      ),*/
-                      SizedBox(
                           width: 250,
                           height: 140,
                           child: LineChart(
@@ -155,12 +182,13 @@ class Vaccine extends StatelessWidget {
                               lineBarsData: [
                                 LineChartBarData(
                                   spots: [
-                                    FlSpot(0, 1),
-                                    FlSpot(1, 2),
-                                    FlSpot(2, 3),
-                                    FlSpot(3, 4),
-                                    FlSpot(4, 5),
-                                    FlSpot(5, 6),
+                                    FlSpot(0, vaccine.graphNum.toDouble()),
+                                    FlSpot(1, vaccine.graphNum.toDouble()),
+                                    FlSpot(2, vaccine.graphNum.toDouble()),
+                                    FlSpot(3, vaccine.graphNum.toDouble()),
+                                    FlSpot(4, vaccine.graphNum.toDouble()),
+                                    FlSpot(5, vaccine.graphNum.toDouble()),
+                                    FlSpot(6, global.totalVacc.toDouble()*0.000000001)
                                   ],
                                   isCurved: false,
                                 barWidth: 2,
@@ -181,19 +209,19 @@ class Vaccine extends StatelessWidget {
                                     getTitles: (value) {
                                       switch (value.toInt()) {
                                         case 0:
-                                          return '5/2';
+                                          return '05-24';
                                         case 1:
-                                          return '5/3';
+                                          return '05-25';
                                         case 2:
-                                          return '5/4';
+                                          return '05-26';
                                         case 3:
-                                          return '5/5';
+                                          return '05-27';
                                         case 4:
-                                          return '5/6';
+                                          return '05-28';
                                         case 5:
-                                          return '5/7';
+                                          return '05-29';
                                         case 6:
-                                          return '5/8';
+                                          return parseDate.substring(5, 10);
                                         default:
                                           return '';
                                       }
@@ -201,7 +229,7 @@ class Vaccine extends StatelessWidget {
                                 leftTitles: SideTitles(
                                   showTitles: true,
                                   getTitles: (value) {
-                                    return '${value + 0.1}B';
+                                    return '${value+0.5}B';
                                   },
                                 ),
                               ),
@@ -214,6 +242,7 @@ class Vaccine extends StatelessWidget {
                             ),
                           ),
                       ),
+                    ),
                   ]
                 ),
               ),
@@ -235,21 +264,49 @@ class Vaccine extends StatelessWidget {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          TextButton(onPressed: () => vaccine._changeGraph(4), child: Text("Table1", style: TextStyle(color: Colors.blue, fontSize: 15),)),
-                          TextButton(onPressed: () => vaccine._changeGraph(5), child: Text("Table2", style: TextStyle(color: Colors.blue, fontSize: 15),)),
+                          TextButton(onPressed: () => vaccine._changeGraph(4), child: Text("Country_name", style: TextStyle(color: Colors.blue, fontSize: 15),)),
+                          TextButton(onPressed: () => vaccine._changeGraph(5), child: Text("Total_vacc", style: TextStyle(color: Colors.blue, fontSize: 15),)),
                         ]
-                    ),
+                    ),/*
                     Consumer<VaccineCounterProvider> (
                       builder: (context, counter, child) => Text(
                         '${vaccine.table}',
                         //style: Theme.of(context).textTheme.headline4,
                       ),
-                    ),
+                    ),*/
                     Consumer<VaccineCounterProvider>(
                       builder: (context, counter, child) => SizedBox(
                         width: 200,
                         height: 150,
-                        child: Image.asset(vaccine.timage),
+                        child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: DataTable(
+                              columns: [
+                                DataColumn(label: Text('Country')),
+                                DataColumn(label: Text('total')),
+                                DataColumn(label: Text('fully')),
+                                DataColumn(label: Text('daily')),
+                              ],
+                              rows: [
+                                DataRow(
+                                  cells: [
+                                    DataCell(Text('A1')),
+                                    DataCell(Text('B1')),
+                                    DataCell(Text('C1')),
+                                    DataCell(Text('D1')),
+                                  ]
+                                ),
+                                DataRow(
+                                  cells: [
+                                    DataCell(Text('A2')),
+                                    DataCell(Text('B2')),
+                                    DataCell(Text('C2')),
+                                    DataCell(Text('D2')),
+                                  ]
+                                ),
+                              ],
+                            )
+                        )
                       ),
                     ),
                   ],
@@ -268,32 +325,32 @@ class Vaccine extends StatelessWidget {
 
 class VaccineCounterProvider with ChangeNotifier {
   int count = 0;
-  String _imagepath = "assets/images/olaf1.png";
+  int graphNum = 0;
   String _timagepath = "assets/images/olaf1.png";
   String Graph = "Graph1";
   String Table = "Table1";
   get graph => Graph;
   get table => Table;
-  get image => _imagepath;
+  get order => graphNum;
   get timage => _timagepath;
 
   VaccineCounterProvider(this.count);
   void _changeGraph(int count) {
     switch (count) {
       case 0:
-        _imagepath = "assets/images/olaf1.png";
+        graphNum = 1;
         Graph = "Graph1";
         break;
       case 1:
-        _imagepath = "assets/images/olaf2.png";
+        graphNum = 2;
         Graph = "Graph2";
         break;
       case 2:
-        _imagepath = "assets/images/olaf3.png";
+        graphNum = 3;
         Graph = "Graph3";
         break;
       case 3:
-        _imagepath = "assets/images/olaf4.png";
+        graphNum = 4;
         Graph = "Graph4";
         break;
       case 4:

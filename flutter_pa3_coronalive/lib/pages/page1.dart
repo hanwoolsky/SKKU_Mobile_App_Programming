@@ -15,6 +15,9 @@ class Page1 extends StatelessWidget {
       Navigator.pushNamed(
         context,
         '/menu.dart',
+          arguments: {
+            "user-msg1": arguments["user-msg3"],
+          },
       );
     }
 

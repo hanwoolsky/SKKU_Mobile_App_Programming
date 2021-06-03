@@ -13,6 +13,9 @@ class CaseDeath extends StatelessWidget {
       Navigator.pushNamed(
         context,
         '/menu.dart',
+        arguments: {
+          "user-msg1": arguments["user-msg1"],
+        },
       );
     }
     return Scaffold(
@@ -181,8 +184,6 @@ class CaseDeath extends StatelessWidget {
                         children: [
                           TextButton(onPressed: () => casedeath._changeGraph(4), child: Text("Table1", style: TextStyle(color: Colors.blue, fontSize: 15),)),
                           TextButton(onPressed: () => casedeath._changeGraph(5), child: Text("Table2", style: TextStyle(color: Colors.blue, fontSize: 15),)),
-                          TextButton(onPressed: () => casedeath._changeGraph(6), child: Text("Table3", style: TextStyle(color: Colors.blue, fontSize: 15),)),
-                          TextButton(onPressed: () => casedeath._changeGraph(7), child: Text("Table4", style: TextStyle(color: Colors.blue, fontSize: 15),)),
                         ]
                     ),
                     Consumer<CaseDeathCounterProvider> (
@@ -249,14 +250,6 @@ class CaseDeathCounterProvider with ChangeNotifier {
       case 5:
         _timagepath = "assets/images/olaf2.png";
         Table = "Table2";
-        break;
-      case 6:
-        _timagepath = "assets/images/olaf3.png";
-        Table = "Table3";
-        break;
-      case 7:
-        _timagepath = "assets/images/olaf4.png";
-        Table = "Table4";
         break;
     }
     notifyListeners();

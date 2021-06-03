@@ -82,7 +82,8 @@ class MyHomePage extends StatelessWidget {
           '/page1.dart',
           arguments: {
             "user-msg1": "CORONA LIVE",
-            "user-msg2": "Login Success. Hello ${_id}!!",
+            "user-msg2": "Login Success. Hello $_id!!",
+            "user-msg3": "$_id",
           },
         );
       }

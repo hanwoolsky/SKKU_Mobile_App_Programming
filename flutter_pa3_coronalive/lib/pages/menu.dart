@@ -18,6 +18,9 @@ class Menu extends StatelessWidget {
       Navigator.pushNamed(
         context,
         '/casedeath.dart',
+        arguments: {
+          "user-msg1": arguments["user-msg1"],
+        },
       );
     }
 
@@ -26,6 +29,9 @@ class Menu extends StatelessWidget {
       Navigator.pushNamed(
         context,
         '/vaccine.dart',
+        arguments: {
+          "user-msg1": arguments["user-msg1"],
+        },
       );
     }
 
@@ -51,7 +57,7 @@ class Menu extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Welcome! skku"),
+                Text("Welcome! " + arguments["user-msg1"]),
               ]
             ),
             Row(
