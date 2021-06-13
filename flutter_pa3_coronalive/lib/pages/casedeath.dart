@@ -1,10 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+
+Future<Album> fetchAlbum() async {
+  final response = await http.get(Uri.https('covid.ourworldindata.org', 'data/owid-covid-data.json'));
+  if (response.statusCode == 200) {
+    return Album.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to load album');
+  }
+}
+
+class Album {
+  final String date;
+  final double totalCases;
+  final double totalDeaths;
+  final double newCases;
+  Album({@required this.date, @required this.totalCases, @required this.totalDeaths, @required this.newCases});
+
+  factory Album.fromJson(Map<String, dynamic> json) {
+    var list = json['KOR']['data'];
+
+    return Album(
+      date: list[list.length-1]['date'],
+      totalCases: list[list.length-1]['total_cases'],
+      totalDeaths: list[list.length-1]['total_deaths'],
+      newCases: list[list.length-1]['new_cases'],
+    );
+  }
+}
 
 class CaseDeath extends StatelessWidget {
   final Map<String, String> arguments;
   CaseDeath(this.arguments);
+  Future<Album> futureAlbum = fetchAlbum();
 
   @override
   Widget build(BuildContext context) {
@@ -42,15 +74,26 @@ class CaseDeath extends StatelessWidget {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          TextButton(child: Text("Cases/Deaths", style: TextStyle(color: Colors.black, fontSize: 15),)),
-                          TextButton(child: Text("Pages", style: TextStyle(color: Colors.black, fontSize: 15),)),
+                          Text("Total Cases          ", style: TextStyle(color: Colors.black, fontSize: 15)),
+                          Text("Parsed latest date", style: TextStyle(color: Colors.black, fontSize: 15)),
                         ]
+                    ),
+                    FutureBuilder<Album>(
+                      future: futureAlbum,
+                      builder: (context, snapshot){
+                        if(snapshot.hasData){
+                          return Text("0 people         ${snapshot.data.date}");
+                        } else if(snapshot.hasError) {
+                          return Text("${snapshot.error}");
+                        }
+                        return CircularProgressIndicator();
+                      },
                     ),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          TextButton(child: Text("Contents", style: TextStyle(color: Colors.black, fontSize: 15),)),
-                          TextButton(child: Text("will be field", style: TextStyle(color: Colors.black, fontSize: 15),)),
+                          Text("\nTotal Deaths          ", style: TextStyle(color: Colors.black, fontSize: 15)),
+                          Text("\nDaily Cases", style: TextStyle(color: Colors.black, fontSize: 15)),
                         ]
                     ),
                   ],
@@ -83,16 +126,8 @@ class CaseDeath extends StatelessWidget {
                     Consumer<CaseDeathCounterProvider> (
                       builder: (context, counter, child) => Text(
                         '${casedeath.graph}',
-                        //style: Theme.of(context).textTheme.headline4,
                       ),
                     ),
-                    /*Consumer<CaseDeathCounterProvider>(
-                      builder: (context, counter, child) => SizedBox(
-                        width: 200,
-                        height: 150,
-                        child: Image.asset(casedeath.image),
-                      ),
-                    ),*/
                     SizedBox(
                       width: 250,
                       height: 140,
