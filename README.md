@@ -34,4 +34,4 @@
     
 >   [Things to improve in Covid19] </br>
 >   I have not yet completely filled in the graph and table information. </br>
->   There is a need to improve the speed of getching data. </br>
+>   In addition, there is a need to improve the speed of fetching data. </br>
